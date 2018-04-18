@@ -102,7 +102,7 @@ public class ClockGui extends JFrame implements MouseListener{
 		minute = cal.get(Calendar.MINUTE);
 		second = cal.get(Calendar.SECOND);	
 		
-		//Pintamos el reloj
+		//Pintamos el reloj principal
 		if(status==1){
 			g.setColor(Color.LIGHT_GRAY);
 			g.fillRect(centerX-40, centerY-35, 90, 20);
