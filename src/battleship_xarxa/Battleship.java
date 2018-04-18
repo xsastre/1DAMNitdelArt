@@ -10,9 +10,9 @@ import java.net.*;
 public class Battleship extends JFrame
 {		
 	private static JButton ok = new JButton("OK"),//closes stats menu
-						   done =new JButton("Done");//closes options menu
-	private static JFrame statistics= new JFrame("Statistics"),//holds stats
-						  options=new JFrame("Options");//holds opts
+						   done =new JButton("Hecho");//closes options menu
+	private static JFrame statistics= new JFrame("Estadísticas"),//holds stats
+						  options=new JFrame("Opciones");//holds opts
 	private static JLabel data,//used for stats menu
 						  title;//used for options menu
 	private static JPanel stats=new JPanel(),//used for stats menu
@@ -25,14 +25,14 @@ public class Battleship extends JFrame
 	//array of letters used for combo boxes
 			    	 cnumbers = {" ","1","2","3","4","5","6","7","8","9","10"},
 	//array of numbers used for combo boxes
-					 ships = {"Carrier","Battleship","Submarine","Destroyer",
-					 "Patrol Boat"},//strings used for ship combo box
+					 ships = {"Portaaviones","Acorazado","Submarino","Destructor",
+					 "Bote"},//strings used for ship combo box
 					 direction = {"Horizontal","Vertical"},//directions
-					 level={"Normal", "Ridiculously Hard"}, 
-					 layout={"Manual","Automatic"},
-					 colors={"Cyan", "Green", "Yellow", "Magenta", "Pink", "Red",
-					 "White"},
-					 first={"Player 1", "Player 2", "Random"};//used for options
+					 level={"Normal", "Ridículamente complicado"}, 
+					 layout={"Manual","Automatico"},
+					 colors={"Azul", "Verde", "Amarillo", "Morado", "Rosa", "Rojo",
+					 "Blanco"},
+					 first={"Jugador 1", "Jugador 2", "Aleatorio"};//used for options
 	private JComboBox cshi = new JComboBox(ships),//ships
 					  cdir = new JComboBox(direction);//directions
 	private static JComboBox aiLevel=new JComboBox(level),
@@ -43,7 +43,7 @@ public class Battleship extends JFrame
 	private JTextField mbar = new JTextField();//message bar	
 	private static int enemy=1,
 				i,j,//counters							
-				length=5,
+				length=4,
 				you=0,
 				prevcolor=0,//index of previous color
 				prevFirst=0,
@@ -53,7 +53,7 @@ public class Battleship extends JFrame
 				sindex=0,//stores index of array
 				dindex=0;//direction	
 	private static Player players[]=new Player[2];
-	private static JButton deploy=new JButton("DEPLOY");
+	private static JButton deploy=new JButton("DESPLEGAR");
 	private static int w=0,a=0,s=0,t=0,e=0;//counters to track the use of all ships
 	private static String[][] shiphit=new String[10][10];
 	private static String user,user2;
@@ -72,11 +72,11 @@ public class Battleship extends JFrame
 		setResizable(false);			
 		
 		//gets user to input name
-		user=JOptionPane.showInputDialog("Enter your name.");		
+		user=JOptionPane.showInputDialog("Introduce un nombre.");		
 		int dummy=0;
 		while (((user==null)||(user.equals("")))&&(dummy<3))
 		{				
-			user=JOptionPane.showInputDialog("You have to input something.");
+			user=JOptionPane.showInputDialog("Tienes que introducir algo.");
 			if ((user!=null)&&(!user.equals("")))
 				dummy=4;
 			else
@@ -84,9 +84,9 @@ public class Battleship extends JFrame
 		}
 		if (dummy==3)
 		{
-			JOptionPane.showMessageDialog(null,"Since you're having trouble inp"
-			+"utting your name, I'll just call you stupid.","",JOptionPane.INFORMATION_MESSAGE);
-			user="Stupid";
+			JOptionPane.showMessageDialog(null,"Eres un cruck! Por gracietas"
+                                + " te llamaré Tontito","",JOptionPane.INFORMATION_MESSAGE);
+			user="Tontito";
 		}
 		players[you]=new Player (user);
 		players[enemy]=new Player ("Computer");						
@@ -301,33 +301,33 @@ public class Battleship extends JFrame
 		JMenuBar menuBar = new JMenuBar();
 
 		// build the Game menu
-		menu = new JMenu("Game");
+		menu = new JMenu("Ajustes");
 		menuBar.add(menu);
-		m = new JMenu("New Game");		
+		m = new JMenu("Nueva Partida");		
 		menu.add(m);
 		
 		//submenu of New Game
 		GameListener stuff = new GameListener();
-		pvp = new JMenuItem("Player vs. Player");		
+		pvp = new JMenuItem("Jugador vs. Jugador");		
 		pvp.addActionListener(stuff);
 		m.add(pvp);
-		pvc = new JMenuItem("Player vs. Computer");
+		pvc = new JMenuItem("Jugador vs. IA");
 		pvc.addActionListener(stuff);
 		m.add(pvc);
-		cvc = new JMenuItem("Computer vs. Computer");
+		cvc = new JMenuItem("IA vs. IA");
 		cvc.addActionListener(stuff);
 		m.add(cvc);
 		
-		m = new JMenuItem("Rules");
+		m = new JMenuItem("Reglas");
 		m.addActionListener(new RulesListener());
 		menu.add(m);
-		m = new JMenuItem("Statistics");
+		m = new JMenuItem("Estadísticas");
 		m.addActionListener(new StatsListener());		
 		menu.add(m);
-		m = new JMenuItem("Options");
+		m = new JMenuItem("Opciones");
 		m.addActionListener(new OptionsListener());		
 		menu.add(m);
-		m = new JMenuItem("Exit");
+		m = new JMenuItem("Salir");
 		m.addActionListener(new ExitListener());
 		menu.add(m);	
 		return menuBar;
@@ -337,20 +337,20 @@ public class Battleship extends JFrame
 	public JPanel shipinput()
 	{
 		input= new JPanel();
-		mbar.setText("Select a ship, its front position and direction.");
+		mbar.setText("Selecciona un barco, su posición y dirección.");
 		mbar.setFont(new Font("Courier New", Font.BOLD, 14));
 		mbar.setEditable(false);
 		//input.add(mbar);
 		cshi.setSelectedIndex(0);	
 		cshi.addActionListener(new ShipsListener());
 		TitledBorder title;//used for titles around combo boxes
-		title = BorderFactory.createTitledBorder("Ships");
+		title = BorderFactory.createTitledBorder("Barcos");
 		cshi.setBorder(title);	
 		input.add(cshi);		
 		cdir.setSelectedIndex(0);	
 		cdir.addActionListener(new DirectListener());	
 		input.add(cdir);
-		title = BorderFactory.createTitledBorder("Direction");
+		title = BorderFactory.createTitledBorder("Dirección");
 		cdir.setBorder(title);		
 		deploy.setEnabled(false);
 		deploy.addActionListener(new DeployListener());
@@ -406,7 +406,7 @@ public class Battleship extends JFrame
 	{
 		players[u].setGBoard(new JPanel(new GridLayout(11,11)));//panel to store board		
 		JTextField k;	
-		if (!players[u].getUser().equals("Unknown"))
+		if (!players[u].getUser().equals("Desconocido"))
 			for (i=0;i<5;i++)
 			{				
 				players[u].setBoats(i,players[u].getBoats(i).compinput(i,u));
@@ -472,15 +472,15 @@ public class Battleship extends JFrame
 				cdir.setSelectedIndex(players[you].getBoats(sindex).getDirect());
 			switch (sindex)
 			{
-				case 0:		length=5;
+				case 0:		length=4;
 				break;
 				case 1:		length=4;
 				break;
 				case 2:		length=3;	
 				break;
-				case 3:		length=3;
+				case 3:		length=2;
 				break;
-				case 4:		length=2;
+				case 4:		length=1;
 				break;							
 			}
 			if (players[you].getBoats(sindex) != null)
@@ -580,8 +580,8 @@ public class Battleship extends JFrame
 	{
 		public void actionPerformed(ActionEvent e)
 		{
-			int r= JOptionPane.showConfirmDialog(null,"Are you sure you would l"
-			+"ike to exit Battleship?", "Exit?", JOptionPane.YES_NO_OPTION);
+			int r= JOptionPane.showConfirmDialog(null,"Estas seguro "
+                                + "de salir del juego?", "Salir?", JOptionPane.YES_NO_OPTION);
 			if (r==0)
 				System.exit(0);	
 		}	
@@ -592,8 +592,8 @@ public class Battleship extends JFrame
 	{	
 		public void actionPerformed(ActionEvent e)
 		{	
-			int q= JOptionPane.showConfirmDialog(null,"Are you sure you would l"
-			+"ike to start a new game?", "New Game?", JOptionPane.YES_NO_OPTION);
+			int q= JOptionPane.showConfirmDialog(null,"Estás seguro "
+                                + "de empezar otra partida?", "Nueva Partida?", JOptionPane.YES_NO_OPTION);
 			if (q==0)
 			{					
 				//resets variables
@@ -624,18 +624,18 @@ public class Battleship extends JFrame
 					}
 					if (!players[you].getUser().equals("CPU1"))
 					{
-						if (players[you].getUser().equals("Stupid"))
+						if (players[you].getUser().equals("Tontito"))
 						{
-							int w=JOptionPane.showConfirmDialog(null,"Would you"
-							+" like to try inputting your name again?","",
+							int w=JOptionPane.showConfirmDialog(null,"Te gustaría "
+                                                                + "volver a introducir tu nombre?","",
 							JOptionPane.YES_NO_OPTION);
 							if (w==JOptionPane.YES_OPTION)
 							{	
-								user=JOptionPane.showInputDialog("Enter your name.");
+								user=JOptionPane.showInputDialog("Introduce un nombre.");
 								int dummy=0;
 								while (((user==null)||(user.equals("")))&&(dummy<3))
 								{				
-									user=JOptionPane.showInputDialog("You have to input something.");
+									user=JOptionPane.showInputDialog("Tienes que introducir algo.");
 									if ((user!=null)&&(!user.equals("")))
 										dummy=4;
 									else
@@ -643,14 +643,14 @@ public class Battleship extends JFrame
 								}
 								if (dummy==3)
 								{
-									JOptionPane.showMessageDialog(null,"Still a"
-									+"cting stupid.  Oh well, we'll run with it."
+									JOptionPane.showMessageDialog(null,"Sigues con la tontería? "
+                                                                                + "Podremos seguir con ello"
 									,"",JOptionPane.INFORMATION_MESSAGE);
-									user="Stupid";
+									user="Tontito";
 								}
 								else
-									JOptionPane.showMessageDialog(null,"That wasn't"
-									+" so hard now, was it?","YEAH!",
+									JOptionPane.showMessageDialog(null,"No fue tan difícil verdad?",""
+                                                                                + "YEAH!",
 									JOptionPane.INFORMATION_MESSAGE);									
 							}							
 						}
@@ -660,7 +660,7 @@ public class Battleship extends JFrame
 						players[you]=new Player (user);								
 					if (selectedValue.equals("Online"))
 					{
-						players[enemy]=new Player ("Unknown");
+						players[enemy]=new Player ("Desconocido");
 						if (!isAutoSet())
 						{
 							b.add(setBoard(you),BorderLayout.CENTER);							
@@ -679,10 +679,10 @@ public class Battleship extends JFrame
 						//gets user to input name
 						if((players[enemy].getUser().equals("Computer"))||(players[enemy].getUser().equals("CPU2"))||(players[enemy].getUser().equals("Unknown")))
 						{							
-							user2=JOptionPane.showInputDialog("Enter your name.");					
+							user2=JOptionPane.showInputDialog("Introduce un número");					
 							while ((user2==null)||(user2.equals("")))
 							{				
-								user2=JOptionPane.showInputDialog("You have to input something.");							
+								user2=JOptionPane.showInputDialog("Tienes que introducir algo.");							
 							}						
 						}
 						else
@@ -700,18 +700,18 @@ public class Battleship extends JFrame
 				{						
 					if (!players[you].getUser().equals("CPU1"))
 					{
-						if (players[you].getUser().equals("Stupid"))
+						if (players[you].getUser().equals("Tontito"))
 						{
-							int w=JOptionPane.showConfirmDialog(null,"Would you"
-							+" like to try inputting your name again?","",
+							int w=JOptionPane.showConfirmDialog(null,"Te gustaría "
+                                                                + "volver a introducir tu nombre?","",
 							JOptionPane.YES_NO_OPTION);
 							if (w==JOptionPane.YES_OPTION)
 							{	
-								user=JOptionPane.showInputDialog("Enter your name.");
+								user=JOptionPane.showInputDialog("Introduce un nombre");
 								int dummy=0;
 								while (((user==null)||(user.equals("")))&&(dummy<3))
 								{				
-									user=JOptionPane.showInputDialog("You have to input something.");
+									user=JOptionPane.showInputDialog("Tienes que introducir algo");
 									if ((user!=null)&&(!user.equals("")))
 										dummy=4;
 									else
@@ -719,14 +719,14 @@ public class Battleship extends JFrame
 								}
 								if (dummy==3)
 								{
-									JOptionPane.showMessageDialog(null,"Still a"
-									+"cting stupid.  Oh well, we'll run with it."
+									JOptionPane.showMessageDialog(null,"Sigues con la tontería? "
+                                                                                + "Podremos seguir con ello"
 									,"",JOptionPane.INFORMATION_MESSAGE);
-									user="Stupid";
+									user="Tontito";
 								}
 								else
-									JOptionPane.showMessageDialog(null,"That wasn't"
-									+" so hard now, was it?","YEAH!",
+									JOptionPane.showMessageDialog(null,"No fue tan difícil verdad?",""
+                                                                                + "YEAH!",
 									JOptionPane.INFORMATION_MESSAGE);									
 							}							
 						}
@@ -807,11 +807,11 @@ public class Battleship extends JFrame
 			stats.setLayout(new GridLayout(6,3));					
 			data=new JLabel("");
 			stats.add(data);
-			data=new JLabel("Player 1",SwingConstants.CENTER);
+			data=new JLabel("Jugador 1",SwingConstants.CENTER);
 			stats.add(data);
-			data=new JLabel("Player 2",SwingConstants.CENTER);
+			data=new JLabel("Jugador 2",SwingConstants.CENTER);
 			stats.add(data);				
-			data=new JLabel("Names");
+			data=new JLabel("Nombres");
 			stats.add(data);
 			if (you == 0)
 			{								
@@ -819,25 +819,25 @@ public class Battleship extends JFrame
 				stats.add(data);
 				data=new JLabel(players[enemy].getUser(),SwingConstants.CENTER);
 				stats.add(data);
-				data=new JLabel("Shots Taken");
+				data=new JLabel("Disparos recibidos");
 				stats.add(data);
 				data=new JLabel(Integer.toString(players[you].getShots()),SwingConstants.CENTER);
 				stats.add(data);
 				data=new JLabel(Integer.toString(players[enemy].getShots()),SwingConstants.CENTER);
 				stats.add(data);
-				data=new JLabel("Hits");
+				data=new JLabel("Impactos");
 				stats.add(data);
 				data=new JLabel(Integer.toString(players[you].getHits()),SwingConstants.CENTER);
 				stats.add(data);
 				data=new JLabel(Integer.toString(players[enemy].getHits()),SwingConstants.CENTER);
 				stats.add(data);
-				data=new JLabel("Shot Accuracy");
+				data=new JLabel("Precisión");
 				stats.add(data);
 				data=new JLabel(players[you].getAcc(),SwingConstants.CENTER);
 				stats.add(data);
 				data=new JLabel(players[enemy].getAcc(),SwingConstants.CENTER);
 				stats.add(data);
-				data=new JLabel("Ships Left");
+				data=new JLabel("Barcos restantes");
 				stats.add(data);
 				data=new JLabel(Integer.toString(players[you].getShipsLeft()),SwingConstants.CENTER);
 				stats.add(data);
@@ -850,25 +850,25 @@ public class Battleship extends JFrame
 				stats.add(data);
 				data=new JLabel(players[you].getUser(),SwingConstants.CENTER);
 				stats.add(data);
-				data=new JLabel("Shots Taken");
+				data=new JLabel("Disparos recibidos");
 				stats.add(data);
 				data=new JLabel(Integer.toString(players[enemy].getShots()),SwingConstants.CENTER);
 				stats.add(data);
 				data=new JLabel(Integer.toString(players[you].getShots()),SwingConstants.CENTER);
 				stats.add(data);
-				data=new JLabel("Hits");
+				data=new JLabel("Impactos");
 				stats.add(data);
 				data=new JLabel(Integer.toString(players[enemy].getHits()),SwingConstants.CENTER);
 				stats.add(data);
 				data=new JLabel(Integer.toString(players[you].getHits()),SwingConstants.CENTER);
 				stats.add(data);
-				data=new JLabel("Shot Accuracy");
+				data=new JLabel("Precisión");
 				stats.add(data);
 				data=new JLabel(players[enemy].getAcc(),SwingConstants.CENTER);
 				stats.add(data);
 				data=new JLabel(players[you].getAcc(),SwingConstants.CENTER);
 				stats.add(data);
-				data=new JLabel("Ships Left");
+				data=new JLabel("Barcos restantes");
 				stats.add(data);
 				data=new JLabel(Integer.toString(players[enemy].getShipsLeft()),SwingConstants.CENTER);
 				stats.add(data);
@@ -886,8 +886,8 @@ public class Battleship extends JFrame
 	{	
 		public void actionPerformed(ActionEvent v)
 		{	
-			int r= JOptionPane.showConfirmDialog(null,"Are you sure you would l"
-			+"ike to deploy your ships?", "Deploy Ships?", 
+			int r= JOptionPane.showConfirmDialog(null,"Seguro que quieres "
+                                + "desplegar tu flota?", "Desplegar flota?", 
 			JOptionPane.YES_NO_OPTION);
 			if (r==0)
 			{	
@@ -927,16 +927,16 @@ public class Battleship extends JFrame
 			opts.add(title);			
 			aiLevel.setSelectedIndex(0);			
 			opts.add(aiLevel);
-			title=new JLabel("Ship Layout");
+			title=new JLabel("Diseño del barco");
 			opts.add(title);			
 			shipLayout.setSelectedIndex(0);			
 			opts.add(shipLayout);
-			title=new JLabel("Ship Color");
+			title=new JLabel("Color barco");
 			opts.add(title);				
 			shipColor.addActionListener(new SColorListener());
 			shipColor.setSelectedIndex(0);	
 			opts.add(shipColor);
-			title=new JLabel("Who Plays First?");
+			title=new JLabel("Quien juega primero?");
 			opts.add(title);			
 			playsFirst.setSelectedIndex(0);			
 			opts.add(playsFirst);		
@@ -977,8 +977,8 @@ public class Battleship extends JFrame
 					(aiLevel.getSelectedIndex()!=prevLevel)||
 					(playsFirst.getSelectedIndex()!=prevFirst))
 				{
-					JOptionPane.showMessageDialog(null,"Changes will take"+
-					" place at the start of a new game.",""
+					JOptionPane.showMessageDialog(null,"Los cambios se"
+                                                + " realizarán al inicio de la próxima partida.",""
 					,JOptionPane.PLAIN_MESSAGE);
 					if (shipLayout.getSelectedIndex()!=prevLayout)
 						prevLayout=shipLayout.getSelectedIndex();
@@ -1049,7 +1049,7 @@ public class Battleship extends JFrame
 					}					
 				}					
 				catch (IOException e)
-				{ System.out.println("You Suck"); }
+				{ System.out.println("Apestas"); }
 			}			
 		}		//System.out.println("okay");		
 	}
