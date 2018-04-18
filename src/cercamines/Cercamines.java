@@ -25,42 +25,127 @@ import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
- 
+
 public class Cercamines extends JFrame {
   private JPanel jPanel1 = new JPanel();
   private JButton jButton1 = new JButton();
-  private int ample=19;
-  private int alt=12;
-  public  JButton[][] Botons=new JButton [ample][alt];
-  public  String [][] elArray =new String [ample][alt];
+    private javax.swing.JFrame jFrame1;
+    private javax.swing.JMenuItem Dificultad_Dificil;
+    private javax.swing.JMenuItem Dificultad_Facil;
+    private javax.swing.JMenuItem Dificultad_Media;
+    private javax.swing.JMenu Menu_Dificultad;
+    private javax.swing.JMenuBar jMenuBar1;
+    public int ample=14;
+    public int alt=14;
+    public  JButton[][] Botons;
+    public  String [][] elArray;
  
   //—- Depenent de l'ample també s'assignarà el número de bombes
  
 public static void main (String [] args){
-   Cercamines TabBuscaMin = new Cercamines();
+   Cercamines BuscaMinFacil = new Cercamines();
 }
 public Cercamines()  {
     try    {
-      jbInit();
+      jbInit(10,10);
     }
     catch(Exception e)    {
       e.printStackTrace();
     }
   }
+public Cercamines(int alt,int ample) {
+    try {
+        jbInit(alt,ample);
+    } catch(Exception e) {
+        e.printStackTrace();
+    }   
+}
  
-  private void jbInit() throws Exception  {
+  private void jbInit(int nou_alt,int nou_ample) throws Exception  {
     this.getContentPane().setLayout(null);
-    this.setSize(new Dimension(483, 380));
+    this.setSize(new Dimension(365, 420));
     this.setTitle("Cerca Mines");
-    jPanel1.setBounds(new Rectangle(0, 40, 483, 380));
+    this.ample=nou_ample;
+    this.alt=nou_alt;
+    Botons=new JButton [ample][alt];
+    elArray =new String [ample][alt];
+    jPanel1.setBounds(new Rectangle(0, 40, 365, 420));
     jPanel1.setBackground(new Color(162, 175, 227));
     jPanel1.setLayout(null);
     jButton1.setText("COMENÇAR");
-    jButton1.setBounds(new Rectangle(0, 0, 125, 40));
+    jButton1.setBounds(new Rectangle(0, 0, 100, 40));
     jButton1.setFont(new Font("Tahoma", 0, 12));
     jButton1.setHorizontalTextPosition(SwingConstants.CENTER);
     jButton1.setAlignmentY((float)0.0);
     jButton1.setMargin(new Insets(2, 14, 2, 12));
+    
+    jMenuBar1 = new javax.swing.JMenuBar();
+    Menu_Dificultad = new javax.swing.JMenu();
+    Dificultad_Facil = new javax.swing.JMenuItem();
+    Dificultad_Media = new javax.swing.JMenuItem();
+    Dificultad_Dificil = new javax.swing.JMenuItem();
+    jFrame1 = new javax.swing.JFrame();
+    
+            javax.swing.GroupLayout jFrame1Layout = new javax.swing.GroupLayout(jFrame1.getContentPane());
+        jFrame1.getContentPane().setLayout(jFrame1Layout);
+        jFrame1Layout.setHorizontalGroup(
+            jFrame1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 400, Short.MAX_VALUE)
+        );
+        jFrame1Layout.setVerticalGroup(
+            jFrame1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 300, Short.MAX_VALUE)
+        );
+
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        Menu_Dificultad.setText("Dificultad");
+
+        Dificultad_Facil.setIcon(new javax.swing.ImageIcon(getClass().getResource("/cercamines/125.png"))); // NOI18N
+        Dificultad_Facil.setText("Fácil");
+        Dificultad_Facil.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Dificultad_FacilActionPerformed(evt);
+            }
+        });
+        Menu_Dificultad.add(Dificultad_Facil);
+
+        Dificultad_Media.setIcon(new javax.swing.ImageIcon(getClass().getResource("/cercamines/131.png"))); // NOI18N
+        Dificultad_Media.setText("Medio");
+        Dificultad_Media.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Dificultad_MediaActionPerformed(evt);
+            }
+        });
+        Menu_Dificultad.add(Dificultad_Media);
+
+        Dificultad_Dificil.setIcon(new javax.swing.ImageIcon(getClass().getResource("/cercamines/129.png"))); // NOI18N
+        Dificultad_Dificil.setText("Dificil");
+        Dificultad_Dificil.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Dificultad_DificilActionPerformed(evt);
+            }
+        });
+        Menu_Dificultad.add(Dificultad_Dificil);
+
+        jMenuBar1.add(Menu_Dificultad);
+
+        setJMenuBar(jMenuBar1);
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 400, Short.MAX_VALUE)
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 284, Short.MAX_VALUE)
+        );
+
+        pack();
+
+    
     jButton1.addActionListener(new ActionListener()
       {
         public void actionPerformed(ActionEvent e)
@@ -80,6 +165,23 @@ public Cercamines()  {
  
     amagaBotons();
   }
+  
+  
+  private void Dificultad_FacilActionPerformed(java.awt.event.ActionEvent evt) {                                                 
+        // TODO add your handling code here:
+       Cercamines BuscaMinFacil = new Cercamines(10,10);
+    }                                                
+
+   private void Dificultad_MediaActionPerformed(java.awt.event.ActionEvent evt) {                                                 
+        // TODO add your handling code here:
+        Cercamines BuscaMinMedia = new Cercamines(14,14);
+    }
+   
+   private void Dificultad_DificilActionPerformed(java.awt.event.ActionEvent evt) {                                                   
+        // TODO add your handling code here:
+        Cercamines BuscaMinDificil = new Cercamines(18,18);
+    } 
+    
   private void jButton1_actionPerformed(ActionEvent e)  {
    for (int i=0;i<ample;i++){
        for (int z=0;z<alt;z++){
