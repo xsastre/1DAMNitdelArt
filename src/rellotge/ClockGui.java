@@ -14,7 +14,7 @@ import java.util.TimerTask;
 import javax.swing.JFrame;
 
 /* 
- * Clock analog
+ * Reloj analogico
  */
 
 public class ClockGui extends JFrame implements MouseListener{
