@@ -28,6 +28,7 @@ public class ClockGui extends JFrame implements MouseListener{
 	private int centerX;
 	private int centerY;
 	
+        // Para seleccionar el formato de la hora invocamos la biblioteca de SimpleDateFormat y lo llámamos "sf"
 	SimpleDateFormat sf;
 	
 	Calendar cal;
@@ -95,28 +96,30 @@ public class ClockGui extends JFrame implements MouseListener{
 		//number clock face
 		drawNumberClock(g);
 										
-		//get system time
+		//Le decimos a cada variable como va actuará
 		cal = Calendar.getInstance();
 		hour = cal.get(Calendar.HOUR);
 		minute = cal.get(Calendar.MINUTE);
 		second = cal.get(Calendar.SECOND);	
 		
-		//draw digital clock
+		//Pintamos el reloj
 		if(status==1){
 			g.setColor(Color.LIGHT_GRAY);
 			g.fillRect(centerX-40, centerY-35, 90, 20);
 			g.setColor(Color.BLACK);
 			g.drawRect(centerX-40, centerY-35, 90, 20);
+                        //La última "a" es para decirle que nos pinte si la hora es AM (Ante Meridiem) o PM (Post Meridiem)
 			sf = new SimpleDateFormat("hh:mm:ss a");
 			g.setColor(Color.BLACK);
 			g.setFont(new Font("Tahoma", Font.BOLD, 12));
 			g.drawString(sf.format(cal.getTime()), centerX-35+3, centerY-35+15);
 		}
 		
-		//draw date in clock 3
+		//Pone el dia en el reloj amarillo y negro
 		if(status ==2){
 			g.setColor(Color.YELLOW);
 			g.drawRect(centerX+60, centerY-10, 40, 20);
+                        // Aquí le decimos que en el cuadro queremos el día
 			sf = new SimpleDateFormat("dd");
 			g.drawString(sf.format(cal.getTime()), centerX+60+12, centerY+5);
 		}
@@ -205,10 +208,10 @@ public class ClockGui extends JFrame implements MouseListener{
 	}
 	/*-------------------------------------------------*/
 	
-	// event change interface clock
+	// Método que detecta el click y suelta del ratón
 	@Override
 	public void mouseClicked(MouseEvent arg0) {
-		// TODO Auto-generated method stub
+		// Depende de en que reloj esta cambia al siguiente
 		if(status==0){
 			status =1;
 			frame.getContentPane().setBackground(Color.LIGHT_GRAY);
