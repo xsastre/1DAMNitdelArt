@@ -27,7 +27,7 @@ public class Clock extends javax.swing.JFrame {
     ClockDial cd;
 
     public Clock() {
-        setSize(510,530);
+        setSize(510/*ancho*/,530/*alto*/);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         cd=new ClockDial(this);
         getContentPane().add(cd);
@@ -41,7 +41,8 @@ public class Clock extends javax.swing.JFrame {
     }
 
 public static void main(String args[]) {
-                new Clock().setVisible(true);
+    //Abre la pestaña del reloj
+    new Clock().setVisible(true);
     }
 
 Thread ClockEngine=new Thread()
@@ -83,14 +84,19 @@ class ClockDial extends JPanel{
    
     @Override
  public void paintComponent(Graphics g) {
-        g.setColor(Color.BLACK);
+        //Exterior del reloj
+        g.setColor(Color.BLUE);
         g.fillRect(0, 0, getWidth(), getHeight());
+        //Borde del reloj
         g.setColor(Color.WHITE);
-        g.fillOval(5, 5,480,480);
+        g.fillOval(5, 5,680,680);
+        //Interior del reloj
         g.setColor(Color.BLACK);
-        g.fillOval(10, 10,470,470);
-        g.setColor(Color.WHITE);
-        g.fillOval(237,237,15,15);
+        g.fillOval(10,10,670,670);
+        //Agujas y números del reloj
+        g.setColor(Color.YELLOW);
+        //g.fillOval(237,237,35,35);
+        g.fillOval(0,0,350,350);
         g.setFont(g.getFont().deriveFont(Font.BOLD,32));
 
         for(int i=1;i<=12;i++)
