@@ -73,12 +73,13 @@ public class ClockGui extends JFrame implements MouseListener{
 		// TODO Auto-generated method stub
 		super.paint(g);	
 		
-		//border clock
+		//border clock MARCO DEL RELOJ PRINCIPAL
 		if(status == 0){
 			g.setColor(new Color(124, 136, 162));
 			g.fillOval(25, spacing, 350, 350);	
 			g.setColor(Color.WHITE);
 			g.fillOval(35, spacing+10, 330, 330);
+                // MARCO DEL RELOJ BLANCO Y NEGRO 
 		}else if(status == 1){
 			g.setColor(Color.BLACK);
 			g.fillOval(25, spacing, 350, 350);	
@@ -160,7 +161,7 @@ public class ClockGui extends JFrame implements MouseListener{
 			
 		}
 	}
-	
+	//Este m
 	private void drawRadius(Graphics g, int x, int y, double angle,
 			int minRadius, int maxRadius, Color colorNumber) {
 			float sine = (float)Math.sin(angle);

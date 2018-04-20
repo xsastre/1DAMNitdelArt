@@ -89,14 +89,14 @@ class ClockDial extends JPanel{
         g.fillRect(0, 0, getWidth(), getHeight());
         //Borde del reloj
         g.setColor(Color.WHITE);
-        g.fillOval(5, 5,680,680);
+        g.fillOval(5, 5,480,480);
         //Interior del reloj
         g.setColor(Color.BLACK);
-        g.fillOval(10,10,670,670);
+        g.fillOval(10,10,470,470);
         //Agujas y números del reloj
         g.setColor(Color.YELLOW);
-        //g.fillOval(237,237,35,35);
-        g.fillOval(0,0,350,350);
+        g.fillOval(237,237,15,15);
+        //g.fillOval(,273,150,150);
         g.setFont(g.getFont().deriveFont(Font.BOLD,32));
 
         for(int i=1;i<=12;i++)
