@@ -37,29 +37,37 @@ public class tablero extends JPanel implements ActionListener {
 
     private Image ii;
     private final Color dotcolor = new Color(192, 192, 0);
+    int	bigdotcolor=192;
+    int	dbigdotcolor=-2;
     private Color mazecolor;
 
     private boolean ingame = false;
     private boolean dying = false;
     boolean scared=false;
 
-    private final int blocksize = 24;
-    private final int nrofblocks = 15; // numero de files
-    private final int scrsize = nrofblocks * blocksize;
+    public static final int TAMANYBLOC = 24;
+    public static final int NUMEROFILES = 18 ; 
+    public static final int NUMEROCOLUMNES = 22;
+    private final int scrsize = NUMEROFILES * TAMANYBLOC;
     private final int pacanimdelay = 2;
+    private final int ghostanimcount=2;
     private final int pacmananimcount = 4;
     private final int maxghosts = 12;
     private final int pacmanspeed = 6;
 
     private int pacanimcount = pacanimdelay;
     private int pacanimdir = 1;
+    private int	ghostanimpos=0;
     private int pacmananimpos = 0;
+    private boolean pacmanpassaporta=false;
+    private boolean[] fantasmapassaporta;
     private int nrofghosts = 6;
     private int pacsleft, score;
+    private int deathcounter;
     private int[] dx, dy;
     private int[] ghostx, ghosty, ghostdx, ghostdy, ghostspeed;
 
-    private Image ghost;
+    private Image ghost1,ghost2,ghostscared1,ghostscared2,ghost;
     private Image pacman1, pacman2up, pacman2left, pacman2right, pacman2down;
     private Image pacman3up, pacman3down, pacman3left, pacman3right;
     private Image pacman4up, pacman4down, pacman4left, pacman4right;
@@ -70,41 +78,44 @@ public class tablero extends JPanel implements ActionListener {
     final int maxscaredtime=120;
     final int minscaredtime=20;
 
-    /*private final short leveldata[] = {
-        19, 26, 26, 26, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 22,
-        37, 0, 0, 0, 17, 16, 16, 16, 16, 16, 16, 16, 16, 16, 20,
-        21, 0, 0, 0, 17, 16, 16, 16, 16, 16, 16, 16, 16, 16, 20,
-        21, 0, 0, 0, 17, 16, 16, 24, 16, 16, 16, 16, 16, 16, 20,
-        17, 18, 18, 18, 16, 16, 20, 0, 17, 16, 16, 16, 16, 16, 20,
-        17, 16, 16, 16, 16, 16, 20, 0, 17, 16, 16, 16, 16, 24, 20,
-        25, 16, 16, 16, 24, 24, 28, 0, 25, 24, 24, 16, 20, 0, 21,
-        1, 17, 16, 20, 0, 0, 0, 0, 0, 0, 0, 17, 20, 0, 21,
-        1, 17, 16, 16, 18, 18, 22, 0, 19, 18, 18, 16, 20, 0, 21,
-        1, 17, 16, 16, 16, 16, 20, 0, 17, 16, 16, 16, 20, 0, 21,
-        1, 17, 16, 16, 16, 16, 20, 0, 17, 16, 16, 16, 20, 0, 21,
-        1, 17, 16, 16, 16, 16, 16, 18, 16, 16, 16, 16, 20, 0, 21,
-        1, 17, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 20, 0, 21,
-        1, 25, 24, 24, 24, 24, 24, 24, 24, 24, 16, 16, 16, 18, 20,
-        9, 8, 8, 8, 8, 8, 8, 8, 8, 8, 25, 24, 24, 24, 28
-    };*/
-    private final short leveldata[] = {
-	35,26,26,22, 9,12,19,26,22, 9,12,19,26,26,22,
-	37,11,14,17,26,26,20,15,17,26,26,20,11,14,37,
-	17,26,26,20,11, 6,17,26,20, 3,14,17,26,26,20,
-	21, 3, 6,25,22, 5,21, 7,21, 5,19,28, 3, 6,21,
-	21, 9, 8,14,21,13,21, 5,21,13,21,11, 8,12,21,
-	25,18,26,18,24,18,28, 5,25,18,24,18,26,18,28,
-	 6,21, 7,21, 7,21,11, 8,14,21, 7,21, 7,21,03,
-	 4,21, 5,21, 5,21,11,10,14,21, 5,21, 5,21, 1,
-	12,21,13,21,13,21,11,10,14,21,13,21,13,21, 9,
-	19,24,26,24,26,16,26,18,26,16,26,24,26,24,22,
-	21, 3, 2, 2, 6,21,15,21,15,21, 3, 2, 2,06,21,
-	21, 9, 8, 8, 4,17,26, 8,26,20, 1, 8, 8,12,21,
-	17,26,26,22,13,21,11, 2,14,21,13,19,26,26,20,
-	37,11,14,17,26,24,22,13,19,24,26,20,11,14,37,
-	25,26,26,28, 3, 6,25,26,28, 3, 6,25,26,26,28  };
-    
 
+    // LEVELDATA PER 18 FILES 22 COLUMNES
+    private final short leveldata[] = {
+        19, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18,18, 18, 18, 22,
+        17, 48, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 48, 20,
+        16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16,
+        17, 16, 16, 16, 16, 16, 24, 24, 24, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 20,
+        17, 16, 16, 16, 16, 20,  3,  2,  6, 17, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 20,
+        17, 16, 16, 16, 16, 20,  1,  0,  4, 17, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 20,
+        17, 16, 16, 16, 16, 20,  9,  8, 12, 17, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 20,
+        16, 16, 16, 16, 16, 16, 18, 18, 18, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16,
+        17, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 20,
+        17, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 20,
+        17, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 20,
+        17, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 20,
+        17, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 20,
+        17, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 20,
+        17, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 20,
+        16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16,
+        17, 48, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 48, 20,
+        25, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 28    };
+
+// LEVELDATA PER 11 FILES I 22 COLUMNES 
+/*    private final short leveldata[] = {
+        19, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18,18, 18, 18, 22,
+        17, 48, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 48, 20,
+        17, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 20,
+        17, 16, 16, 16, 16, 16, 24, 24, 24, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 20,
+        17, 16, 16, 16, 16, 20,  3,  2,  6, 17, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 20,
+        16, 16, 16, 16, 16, 20,  1,  0,  4, 17, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16,
+        17, 16, 16, 16, 16, 20,  9,  8, 12, 17, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 20,
+        17, 16, 16, 16, 16, 16, 18, 18, 18, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 20,
+        17, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 20,
+        17, 48, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 48, 20,
+        25, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 28    };
+*/   
+
+    
     private final int validspeeds[] = {1, 2, 3, 4, 6, 8};
     private final int maxspeed = 6;
 
@@ -128,7 +139,7 @@ public class tablero extends JPanel implements ActionListener {
 
     private void initVariables() {
 
-        screendata = new short[nrofblocks * nrofblocks];
+        screendata = new short[NUMEROFILES * NUMEROCOLUMNES];
         mazecolor = new Color(5, 100, 5);
         d = new Dimension(400, 400);
         ghostx = new int[maxghosts];
@@ -136,6 +147,9 @@ public class tablero extends JPanel implements ActionListener {
         ghosty = new int[maxghosts];
         ghostdy = new int[maxghosts];
         ghostspeed = new int[maxghosts];
+        fantasmapassaporta = new boolean[maxghosts];
+        for (int i=0;i<maxghosts;i++)
+            fantasmapassaporta[i]=false;
         dx = new int[4];
         dy = new int[4];
 
@@ -150,13 +164,16 @@ public class tablero extends JPanel implements ActionListener {
         initGame();
     }
 
-    private void doAnim() {
+    private void doAnim() { // Simula que obri i tanca la boca el pacman
 
         pacanimcount--;
 
         if (pacanimcount <= 0) {
             pacanimcount = pacanimdelay;
             pacmananimpos = pacmananimpos + pacanimdir;
+            ghostanimpos++;
+            if (ghostanimpos>=ghostanimcount)
+              ghostanimpos=0;
 
             if (pacmananimpos == (pacmananimcount - 1) || pacmananimpos == 0) {
                 pacanimdir = -pacanimdir;
@@ -168,7 +185,7 @@ public class tablero extends JPanel implements ActionListener {
 
         if (dying) {
 
-            death();
+            death(g2d);
 
         } else {
 
@@ -183,17 +200,19 @@ public class tablero extends JPanel implements ActionListener {
     private void showIntroScreen(Graphics2D g2d) {
 
         g2d.setColor(new Color(0, 32, 48));
-        g2d.fillRect(50, scrsize / 2 - 30, scrsize - 100, 50);
+        scared=false;
+        g2d.fillRect(50, NUMEROFILES*TAMANYBLOC / 2 - 30, NUMEROCOLUMNES*TAMANYBLOC - 100, 50);
         g2d.setColor(Color.white);
-        g2d.drawRect(50, scrsize / 2 - 30, scrsize - 100, 50);
+        g2d.drawRect(50, NUMEROFILES*TAMANYBLOC / 2 - 30, NUMEROCOLUMNES*TAMANYBLOC - 100, 50);
 
-        String s = "Presiona s para empezar.";
+        String s = "Pitja s per començar";
         Font small = new Font("Helvetica", Font.BOLD, 15);
         FontMetrics metr = this.getFontMetrics(small);
 
         g2d.setColor(Color.white);
         g2d.setFont(small);
-        g2d.drawString(s, (scrsize - metr.stringWidth(s)) / 2, scrsize / 2);
+        g2d.drawString(s, (NUMEROCOLUMNES*TAMANYBLOC - metr.stringWidth(s)) / 2,
+                NUMEROFILES*TAMANYBLOC / 2);
     }
 
     private void drawScore(Graphics2D g) {
@@ -221,13 +240,13 @@ public class tablero extends JPanel implements ActionListener {
       mazecolor=new Color(32,192,255);
     if (scared)
     {
-      screendata[7*nrofblocks+6]=11;
-      screendata[7*nrofblocks+8]=14;
+      //screendata[7*NUMEROFILES+6]=11;
+      //screendata[7*NUMEROFILES+8]=14;
     }
     else
     {
-      screendata[7*nrofblocks+6]=10;
-      screendata[7*nrofblocks+8]=10;
+      //screendata[7*NUMEROFILES+6]=10;
+      //screendata[7*NUMEROFILES+8]=10;
     }
   }
 
@@ -236,7 +255,7 @@ public class tablero extends JPanel implements ActionListener {
         short i = 0;
         boolean finished = true;
 
-        while (i < nrofblocks * nrofblocks && finished) {
+        while (i < NUMEROFILES * NUMEROCOLUMNES && finished) {
 
             if ((screendata[i] & 48) != 0) {
                 finished = false;
@@ -256,13 +275,32 @@ public class tablero extends JPanel implements ActionListener {
             if (currentspeed < maxspeed) {
                 currentspeed++;
             }
-
+            scaredtime=scaredtime-20;
+            if (scaredtime<minscaredtime)
+                scaredtime=minscaredtime;
             initLevel();
         }
     }
 
-    private void death() {//murio
-
+    private void death(Graphics2D g2d) {//murio
+        int k;
+        deathcounter--;
+        k=(deathcounter&15)/4;
+        switch(k)
+        {
+            case 0:
+                g2d.drawImage(pacman2down, pacmanx + 1, pacmany + 1, this);
+                break;
+            case 1:
+                g2d.drawImage(pacman4right,pacmanx+1,pacmany+1,this);
+                break;
+            case 2:
+                g2d.drawImage(pacman4down,pacmanx+1,pacmany+1,this);
+                break;
+            default:
+                g2d.drawImage(pacman4left,pacmanx+1,pacmany+1,this);
+        }
+        if (deathcounter==0){
         pacsleft--;
 
         if (pacsleft == 0) {
@@ -270,6 +308,8 @@ public class tablero extends JPanel implements ActionListener {
         }
 
         continueLevel();
+            
+        }
     }
 
     private void moveGhosts(Graphics2D g2d) {//mover fantasmas
@@ -277,13 +317,31 @@ public class tablero extends JPanel implements ActionListener {
         short i;
         int pos;
         int count;
+        boolean[] porta_dreta=new boolean[maxghosts];
+        boolean[] porta_esquerra=new boolean[maxghosts];
+        for (int z=0;z<maxghosts;z++) {
+            porta_dreta[z]=false;
+            porta_esquerra[z]=false;
+        }
+            
 
         for (i = 0; i < nrofghosts; i++) {
-            if (ghostx[i] % blocksize == 0 && ghosty[i] % blocksize == 0) {
-                pos = ghostx[i] / blocksize + nrofblocks * (int) (ghosty[i] / blocksize);
+            if (ghostx[i] % TAMANYBLOC == 0 && ghosty[i] % TAMANYBLOC == 0) {
+                pos = ghostx[i] / TAMANYBLOC + NUMEROCOLUMNES * (int) (ghosty[i] / TAMANYBLOC);
 
                 count = 0;
 
+                if (((screendata[pos] == 0) || (screendata[pos]==16)) && ((ghostx[i]/TAMANYBLOC)==NUMEROCOLUMNES-1) &&
+                        !(fantasmapassaporta[i])) {
+                    porta_dreta[i]=true;
+                }
+                if (((screendata[pos]==00) || (screendata[pos]==16)) && ((ghostx[i]/TAMANYBLOC)==0) &&
+                        !(fantasmapassaporta[i])) {
+                    porta_esquerra[i]=true;
+                }
+
+                
+                
                 if ((screendata[pos] & 1) == 0 && ghostdx[i] != 1) {
                     dx[count] = -1;
                     dy[count] = 0;
@@ -331,44 +389,97 @@ public class tablero extends JPanel implements ActionListener {
                 }
 
             }
-
-            ghostx[i] = ghostx[i] + (ghostdx[i] * ghostspeed[i]);
+            
+            if (porta_dreta[i]) {
+                ghostx[i]=0;
+                fantasmapassaporta[i]=true;
+            } else
+                if (porta_esquerra[i]) {
+                    ghostx[i]=(NUMEROCOLUMNES-1)*TAMANYBLOC;
+                    fantasmapassaporta[i]=true;
+                }
+                else {
+                    ghostx[i] = ghostx[i] + (ghostdx[i] * ghostspeed[i]);
+                    fantasmapassaporta[i]=false;
+                }
             ghosty[i] = ghosty[i] + (ghostdy[i] * ghostspeed[i]);
             drawGhost(g2d, ghostx[i] + 1, ghosty[i] + 1);
-
-            if (pacmanx > (ghostx[i] - 12) && pacmanx < (ghostx[i] + 12)
-                    && pacmany > (ghosty[i] - 12) && pacmany < (ghosty[i] + 12)
-                    && ingame) {
-
-                dying = true;
-            }
-        }
+            if (pacmanx>(ghostx[i]-12) && pacmanx<(ghostx[i]+12) &&
+                pacmany>(ghosty[i]-12) && pacmany<(ghosty[i]+12) && ingame)
+            {
+              if (scared)
+              {
+                score+=10;
+                ghostx[i]=7*TAMANYBLOC;
+                ghosty[i]=7*TAMANYBLOC;
+              }
+              else
+              {
+                dying=true;
+                deathcounter=64;
+              }
+            }        }
     }
 
-    private void drawGhost(Graphics2D g2d, int x, int y) {
+/*    private void drawGhost(Graphics2D g2d, int x, int y) {
 
         g2d.drawImage(ghost, x, y, this);
     }
-
+*/
+    public void drawGhost(Graphics2D g2d, int x, int y)
+    {
+      if (ghostanimpos==0 && !scared)
+      {
+        g2d.drawImage(ghost1,x,y,this);
+      }
+      else if (ghostanimpos==1 && !scared)
+      {
+        g2d.drawImage(ghost2,x,y,this);
+      }
+      else if (ghostanimpos==0 && scared)
+      {
+        g2d.drawImage(ghostscared1,x,y,this);
+      }
+      else if (ghostanimpos==1 && scared)
+      {
+        g2d.drawImage(ghostscared2,x,y,this);
+      }
+    }    
     private void movePacman() {
 
         int pos;
         short ch;
+        boolean porta_dreta=false;
+        boolean porta_esquerra=false;
 
         if (reqdx == -pacmandx && reqdy == -pacmandy) {
             pacmandx = reqdx;
-            pacmandy = reqdy;
+           pacmandy = reqdy;
             viewdx = pacmandx;
             viewdy = pacmandy;
         }
 
-        if (pacmanx % blocksize == 0 && pacmany % blocksize == 0) {
-            pos = pacmanx / blocksize + nrofblocks * (int) (pacmany / blocksize);
+        if (pacmanx % TAMANYBLOC == 0 && pacmany % TAMANYBLOC == 0) {
+            pos = pacmanx / TAMANYBLOC + NUMEROCOLUMNES * (int) (pacmany / TAMANYBLOC);
             ch = screendata[pos];
+            
+            if (((ch == 16) || (ch==0)) && ((pacmanx/TAMANYBLOC)==NUMEROCOLUMNES-1) && (!pacmanpassaporta)) {
+                porta_dreta=true;
+            }
+            if (((ch==16) || (ch==0)) && ((pacmanx/TAMANYBLOC)==0) && (!pacmanpassaporta)) {
+                porta_esquerra=true;
+            }
 
             if ((ch & 16) != 0) {
                 screendata[pos] = (short) (ch & 15);
                 score++;
+            }
+            if ((ch&32)!=0)
+            {
+              scared=true;
+              scaredcount=scaredtime;
+              screendata[pos]=(short)(ch&15);
+              score+=5;
             }
 
             if (reqdx != 0 || reqdy != 0) {
@@ -392,7 +503,20 @@ public class tablero extends JPanel implements ActionListener {
                 pacmandy = 0;
             }
         }
-        pacmanx = pacmanx + pacmanspeed * pacmandx;
+        if (porta_dreta) {
+            pacmanx=0;
+            pacmanpassaporta=true;
+        }
+        else 
+            if (porta_esquerra) {
+                pacmanx=(NUMEROCOLUMNES-1)*TAMANYBLOC;
+                pacmanpassaporta=true;
+            }
+            else {
+                pacmanx = pacmanx + pacmanspeed * pacmandx;
+                pacmanpassaporta=false;
+            }
+        
         pacmany = pacmany + pacmanspeed * pacmandy;
     }
 
@@ -487,33 +611,39 @@ public class tablero extends JPanel implements ActionListener {
         short i = 0;
         int x, y;
 
-        for (y = 0; y < scrsize; y += blocksize) {
-            for (x = 0; x < scrsize; x += blocksize) {
+        for (y = 0; y < NUMEROFILES*TAMANYBLOC; y += TAMANYBLOC) {
+            for (x = 0; x < NUMEROCOLUMNES*TAMANYBLOC; x += TAMANYBLOC) {
 
                 g2d.setColor(mazecolor);
                 g2d.setStroke(new BasicStroke(2));
 
                 if ((screendata[i] & 1) != 0) {
-                    g2d.drawLine(x, y, x, y + blocksize - 1);
+                    g2d.drawLine(x, y, x, y + TAMANYBLOC - 1);
                 }
 
                 if ((screendata[i] & 2) != 0) {
-                    g2d.drawLine(x, y, x + blocksize - 1, y);
+                    g2d.drawLine(x, y, x + TAMANYBLOC - 1, y);
                 }
 
                 if ((screendata[i] & 4) != 0) {
-                    g2d.drawLine(x + blocksize - 1, y, x + blocksize - 1,
-                            y + blocksize - 1);
+                    g2d.drawLine(x + TAMANYBLOC - 1, y, x + TAMANYBLOC - 1,
+                            y + TAMANYBLOC - 1);
                 }
 
                 if ((screendata[i] & 8) != 0) {
-                    g2d.drawLine(x, y + blocksize - 1, x + blocksize - 1,
-                            y + blocksize - 1);
+                    g2d.drawLine(x, y + TAMANYBLOC - 1, x + TAMANYBLOC - 1,
+                            y + TAMANYBLOC - 1);
                 }
 
                 if ((screendata[i] & 16) != 0) {
                     g2d.setColor(dotcolor);
                     g2d.fillRect(x + 11, y + 11, 2, 2);
+                }
+                
+                if ((screendata[i]&32)!=0)
+                {
+                  g2d.setColor(new Color(224,224-bigdotcolor,bigdotcolor));
+                  g2d.fillRect(x+8,y+8,8,8);
                 }
 
                 i++;
@@ -524,16 +654,18 @@ public class tablero extends JPanel implements ActionListener {
     private void initGame() {
 
         pacsleft = 3;
+        scaredtime=maxscaredtime;
+        scaredtime=maxscaredtime;        
         score = 0;
         initLevel();
-        nrofghosts = 6;
-        currentspeed = 3;
+        nrofghosts = 6; //Aquí especificam el número de fantasmes inicials
+        currentspeed = 3;       
     }
 
     private void initLevel() {
 
         int i;
-        for (i = 0; i < nrofblocks * nrofblocks; i++) {
+        for (i = 0; i < NUMEROFILES * NUMEROCOLUMNES; i++) {
             screendata[i] = leveldata[i];
         }
 
@@ -548,8 +680,8 @@ public class tablero extends JPanel implements ActionListener {
 
         for (i = 0; i < nrofghosts; i++) {
 
-            ghosty[i] = 4 * blocksize;
-            ghostx[i] = 4 * blocksize;
+            ghosty[i] = 7 * TAMANYBLOC;
+            ghostx[i] = 7 * TAMANYBLOC;
             ghostdy[i] = 0;
             ghostdx[i] = dx;
             dx = -dx;
@@ -561,9 +693,10 @@ public class tablero extends JPanel implements ActionListener {
 
             ghostspeed[i] = validspeeds[random];
         }
-
-        pacmanx = 7 * blocksize;
-        pacmany = 11 * blocksize;
+        //screendata[7*NUMEROFILES+6]=10;
+        //screendata[7*NUMEROFILES+8]=10;
+        pacmanx = NUMEROCOLUMNES/2 * TAMANYBLOC;
+        pacmany = (NUMEROFILES-2) * TAMANYBLOC;
         pacmandx = 0;
         pacmandy = 0;
         reqdx = 0;
@@ -575,6 +708,11 @@ public class tablero extends JPanel implements ActionListener {
 
     private void loadImages() {
 
+        ghost1=new ImageIcon(getClass().getResource("../images/Ghost1.gif")).getImage();
+        ghost2=new ImageIcon(getClass().getResource("../images/Ghost2.gif")).getImage();
+        ghostscared1=new ImageIcon(getClass().getResource("../images/GhostScared1.gif")).getImage();
+        ghostscared2=new ImageIcon(getClass().getResource("../images/GhostScared2.gif")).getImage();
+    
         ghost = new ImageIcon(getClass().getResource("../images/ghost.gif")).getImage();
         pacman1 = new ImageIcon(getClass().getResource("../images/pacman.gif")).getImage();
         pacman2up = new ImageIcon(getClass().getResource("../images/up1.gif")).getImage();
@@ -677,4 +815,5 @@ public class tablero extends JPanel implements ActionListener {
         repaint();
     }
 }
+
 

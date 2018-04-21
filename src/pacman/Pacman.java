@@ -19,7 +19,10 @@ package pacman;
 
 
 import java.awt.EventQueue;
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
+import static javax.swing.JFrame.EXIT_ON_CLOSE;
+import static javax.swing.JFrame.setDefaultLookAndFeelDecorated;
 
 public class Pacman extends JFrame {
 
@@ -31,10 +34,14 @@ public class Pacman extends JFrame {
     private void initUI() {
         
         add(new tablero());
-        setTitle("P A C M A N");
+        setTitle("P A C M A N - C I D E - 1er DAM");
+        setDefaultLookAndFeelDecorated(true);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setSize(380, 420);
+        //setSize(380,420);
+        setSize(tablero.NUMEROCOLUMNES*tablero.TAMANYBLOC+16,(tablero.NUMEROFILES+2)*tablero.TAMANYBLOC+16);
         setLocationRelativeTo(null);
+        ImageIcon img = new ImageIcon(getClass().getResource("../images/logocide_icon.jpg"));
+        setIconImage(img.getImage());
         setVisible(true);        
     }
 
