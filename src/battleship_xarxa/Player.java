@@ -64,9 +64,13 @@ public class Player
 			for (j=0;j<10;j++)
 			{
 				this.bboard[i][j]=new JButton();
-				this.bboard[i][j].setBackground(null);				
+				this.bboard[i][j].setBackground(Color.GREEN);				
 				hitormiss[i][j]=false;
-				this.whatship[i][j]=" ";				
+				this.whatship[i][j]=" ";
+                                //this.bboard[i][j].setSize(100, 100);
+                                this.bboard[i][j].setForeground(Color.green);
+                                this.bboard[i][j].setText("C");
+                                //this.bboard[i][j].setPreferredSize(new Dimension(100,100));
 			}
 		}			
 	}
@@ -158,7 +162,12 @@ public class Player
 	
 	public void setBboard(int i,int j, Color k)
 	{
-		this.bboard[i][j].setBackground(k);	
+                Color nou_color=Color.black;
+		this.bboard[i][j].setBackground(k);
+                if (nou_color==k) {
+                    this.bboard[i][j].setForeground(Color.GREEN);
+                    this.bboard[i][j].setText("C");
+                }
 	}		
 		
 	public void setMove(boolean x)
@@ -382,7 +391,7 @@ public class Player
 							,m)))
 						{								
 							this.setBboard(k,m,Color.black);
-						}					
+                                                        						}					
 			}
 			return true;
 		}
@@ -408,7 +417,7 @@ public class Player
 			for (int k=0;k<10;k++)
 				for (int m=0;m<10;m++)
 					if(z.equals(this.getWhatShip(k,m)))
-						this.setBboard(k,m,Color.black);											
+						this.setBboard(k,m,Color.pink);											
 			return true;
 		}
 		else
