@@ -32,14 +32,18 @@ public class Clock extends javax.swing.JFrame {
     public int min;
     public int sec;
     ClockDial cd;
+    ImageIcon icon;
     //public Image fons=new ImageIcon(getClass().getResource("./nitdelart2018.jpg")).getImage();  
     
 
 
     public Clock() {
         //setSize(510,530);
+        Image icon = new ImageIcon(getClass().getResource("./faviconcide1.jpg")).getImage();
+        setIconImage(icon);
+        setVisible(true);
         setSize(610,530);
-        setResizable(false);
+        setResizable(true);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         cd=new ClockDial(this);
         getContentPane().add(cd);
