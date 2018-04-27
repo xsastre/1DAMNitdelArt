@@ -21,8 +21,6 @@ package pacman;
 import java.awt.EventQueue;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
-import static javax.swing.JFrame.EXIT_ON_CLOSE;
-import static javax.swing.JFrame.setDefaultLookAndFeelDecorated;
 
 public class Pacman extends JFrame {
 
@@ -32,7 +30,6 @@ public class Pacman extends JFrame {
     }
     
     private void initUI() {
-        
         add(new tablero());
         setTitle("P A C M A N - C I D E - 1er DAM");
         setDefaultLookAndFeelDecorated(true);

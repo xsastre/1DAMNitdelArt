@@ -25,6 +25,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.applet.AudioClip;
+import static java.lang.Thread.sleep;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
@@ -34,6 +38,8 @@ public class tablero extends JPanel implements ActionListener {
 
     private Dimension d;
     private final Font smallfont = new Font("Helvetica", Font.BOLD, 14);
+    
+    AudioClip so_inici,so_pacman_menja,so_pacman_menja_cherry,so_pacman_menja_fantasma;
 
     private Image ii;
     private final Color dotcolor = new Color(192, 192, 0);
@@ -77,6 +83,9 @@ public class tablero extends JPanel implements ActionListener {
     int	scaredcount, scaredtime;
     final int maxscaredtime=120;
     final int minscaredtime=20;
+    
+    
+    Thread thread = new Thread(new So_Pacman_Mort());
 
 
     // LEVELDATA PER 18 FILES 22 COLUMNES
@@ -119,7 +128,7 @@ public class tablero extends JPanel implements ActionListener {
     private final int validspeeds[] = {1, 2, 3, 4, 6, 8};
     private final int maxspeed = 6;
 
-    private int currentspeed = 3;
+    private int currentspeed = 4;
     private short[] screendata;
     private Timer timer;
 
@@ -138,7 +147,12 @@ public class tablero extends JPanel implements ActionListener {
     }
 
     private void initVariables() {
-
+        so_inici = java.applet.Applet.newAudioClip(getClass().getResource("/pacman/pacman-song.wav"));
+        so_pacman_menja = java.applet.Applet.newAudioClip(getClass().getResource("/pacman/pacman-waka-waka.wav"));
+        so_pacman_menja_fantasma = java.applet.Applet.newAudioClip(getClass().getResource("/pacman/pacman-eating-ghost.wav"));
+        so_pacman_menja_cherry = java.applet.Applet.newAudioClip(getClass().getResource("/pacman/pacman-eating-cherry.wav"));
+        
+        
         screendata = new short[NUMEROFILES * NUMEROCOLUMNES];
         mazecolor = new Color(5, 100, 5);
         d = new Dimension(400, 400);
@@ -182,9 +196,17 @@ public class tablero extends JPanel implements ActionListener {
     }
 
     private void playGame(Graphics2D g2d) {
-
+        
         if (dying) {
-
+            /*if (!this.PacManMort.isAlive())
+                this.PacManMort.start();
+            */
+            //this.so_pacman_menja.stop();
+            if (!thread.isAlive()) {
+                thread = new Thread(new So_Pacman_Mort());
+                thread.start();
+            }
+            
             death(g2d);
 
         } else {
@@ -284,6 +306,7 @@ public class tablero extends JPanel implements ActionListener {
 
     private void death(Graphics2D g2d) {//murio
         int k;
+        
         deathcounter--;
         k=(deathcounter&15)/4;
         switch(k)
@@ -409,6 +432,7 @@ public class tablero extends JPanel implements ActionListener {
             {
               if (scared)
               {
+                so_pacman_menja_fantasma.play();
                 score+=10;
                 ghostx[i]=7*TAMANYBLOC;
                 ghosty[i]=7*TAMANYBLOC;
@@ -472,6 +496,7 @@ public class tablero extends JPanel implements ActionListener {
 
             if ((ch & 16) != 0) {
                 screendata[pos] = (short) (ch & 15);
+                so_pacman_menja.play();
                 score++;
             }
             if ((ch&32)!=0)
@@ -480,6 +505,7 @@ public class tablero extends JPanel implements ActionListener {
               scaredcount=scaredtime;
               screendata[pos]=(short)(ch&15);
               score+=5;
+              so_pacman_menja_cherry.play();
             }
 
             if (reqdx != 0 || reqdy != 0) {
@@ -659,7 +685,7 @@ public class tablero extends JPanel implements ActionListener {
         score = 0;
         initLevel();
         nrofghosts = 6; //Aquí especificam el número de fantasmes inicials
-        currentspeed = 3;       
+        currentspeed = 3;  
     }
 
     private void initLevel() {
@@ -667,6 +693,15 @@ public class tablero extends JPanel implements ActionListener {
         int i;
         for (i = 0; i < NUMEROFILES * NUMEROCOLUMNES; i++) {
             screendata[i] = leveldata[i];
+        }
+        if (ingame) {
+            this.so_inici.play();
+            try {
+                sleep(4000);
+            } catch (InterruptedException ex) {
+                Logger.getLogger(tablero.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            //so_pacman_menja.loop();
         }
 
         continueLevel();
@@ -704,6 +739,8 @@ public class tablero extends JPanel implements ActionListener {
         viewdx = -1;
         viewdy = 0;
         dying = false;
+        //if (ingame) 
+            // so_pacman_menja.loop();
     }
 
     private void loadImages() {
@@ -753,7 +790,7 @@ public class tablero extends JPanel implements ActionListener {
         } else {
             showIntroScreen(g2d);
         }
-
+        
         g2d.drawImage(ii, 5, 5, this);
         Toolkit.getDefaultToolkit().sync();
         g2d.dispose();
@@ -815,5 +852,4 @@ public class tablero extends JPanel implements ActionListener {
         repaint();
     }
 }
-
 
