@@ -387,7 +387,6 @@ public class Player
 						{
 							Battleship.getPlayers(Battleship.getYou()).setMHS(k,m,2);
 							this.setBboard(k,m,Color.red);    
-                                                        //this.bboard[k][m].setText(this.boats[f].textobarco[contador++]);
 						}
                                 
 				Battleship.getPlayers(Battleship.getYou()).setGo(2);				
