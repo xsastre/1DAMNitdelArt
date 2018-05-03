@@ -67,14 +67,10 @@ public class Player
 			{
 				this.bboard[i][j]=new JButton();
 				this.bboard[i][j].setBackground(null);
-                                //this.bboard[i][j].setBackground(Color.green);
 				hitormiss[i][j]=false;
 				this.whatship[i][j]=" ";	
-                                this.whatship[i][j]=" ";
-                               // this.bboard[i][j].setForeground(Color.green);
-                                this.bboard[i][j].setPreferredSize(new Dimension(50,50));
-                                //this.bboard[i][j].setText("C");
-                                
+                                this.whatship[i][j]=" ";                          
+                                this.bboard[i][j].setPreferredSize(new Dimension(50,50));   
 			}
 		}			
 	}
@@ -110,17 +106,7 @@ public class Player
 	{
 		this.boats[i]=r;		
 	}	
-	
-	/*public void setGames(Board k)
-	{
-		this.games=k;
-	}	
-	
-	public Board getGames()
-	{
-		return this.games;
-	}*/
-	
+        
 	public Ship getBoats(int x)
 	{
 		return this.boats[x];
