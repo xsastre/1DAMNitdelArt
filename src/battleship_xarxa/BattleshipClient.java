@@ -127,11 +127,11 @@ public class BattleshipClient {
 		}
 		else if (results.startsWith("theirshot"))
 		{
-			results=results.substring(results.indexOf(" ")+1);
+			results=results.substring(results.indexOf("")+1);
 			System.out.println("results:  "+results);
 			x=Integer.parseInt(results.substring(0,1));
 			y=Integer.parseInt(results.substring(2,3));
-			if (!Battleship.getPlayers(0).getWhatShip(x,y).equals(" "))
+			if (!Battleship.getPlayers(0).getWhatShip(x,y).equals(""))
 			{
 				Battleship.getPlayers(1).setHits();
 				if (!Battleship.getPlayers(0).isSunk(x,y

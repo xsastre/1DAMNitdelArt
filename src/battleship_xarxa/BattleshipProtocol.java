@@ -161,9 +161,9 @@ public class BattleshipProtocol {
 					break;
 					case 2:		length=3;	
 					break;
-					case 3:		length=3;
+					case 3:		length=2;
 					break;
-					case 4:		length=2;
+					case 4:		length=1;
 					break;							
 				}
 				good:

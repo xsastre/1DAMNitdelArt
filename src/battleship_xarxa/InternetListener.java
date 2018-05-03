@@ -28,8 +28,8 @@ import javax.swing.*;
 								(Battleship.getPlayers(1).getBboard(i,j).getBackground()==Color.orange)||
 								(Battleship.getPlayers(1).getBboard(i,j).getBackground()==Color.blue))
 							{
-								JOptionPane.showMessageDialog(null,"You tri"
-								+"ed that spot already.","Wasted Shot",
+								JOptionPane.showMessageDialog(null,"Ya has"
+								+"disparado este objetivo.","Tiro perdido.",
 								JOptionPane.ERROR_MESSAGE);
 								Battleship.getClient().fireShot();								
 							}
@@ -42,8 +42,8 @@ import javax.swing.*;
 						else if (source==(Battleship.getPlayers(0).getBboard(i
 							,j)))
 						{
-							JOptionPane.showMessageDialog(null,"You are not suppose"
-							+"d to fire on your own board!","Lost Turn",
+							JOptionPane.showMessageDialog(null,"No deberías"
+							+"disparar en tu propio tablero!","Turno perdido.",
 							JOptionPane.WARNING_MESSAGE);
 							Battleship.getClient().fireShot();		
 							break outer;							
@@ -57,8 +57,8 @@ import javax.swing.*;
 			{
 				if (!Battleship.getGameOver())
 				{
-					JOptionPane.showMessageDialog(null,"You cannot not play yet.",
-					"Wait",JOptionPane.WARNING_MESSAGE);				
+					JOptionPane.showMessageDialog(null,"No puedes jugar aún.",
+					"Espere",JOptionPane.WARNING_MESSAGE);				
 				}
 				else
 				{

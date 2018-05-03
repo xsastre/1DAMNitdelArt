@@ -6,6 +6,8 @@ import java.io.*;
 import java.util.Vector;
 import java.lang.Integer;
 import java.text.NumberFormat;	
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 
 public class Player
 {
@@ -64,9 +66,15 @@ public class Player
 			for (j=0;j<10;j++)
 			{
 				this.bboard[i][j]=new JButton();
-				this.bboard[i][j].setBackground(null);				
+				this.bboard[i][j].setBackground(null);
+                                //this.bboard[i][j].setBackground(Color.green);
 				hitormiss[i][j]=false;
-				this.whatship[i][j]=" ";				
+				this.whatship[i][j]=" ";	
+                                this.whatship[i][j]=" ";
+                               // this.bboard[i][j].setForeground(Color.green);
+                                this.bboard[i][j].setPreferredSize(new Dimension(50,50));
+                                //this.bboard[i][j].setText("C");
+                                
 			}
 		}			
 	}
@@ -158,9 +166,24 @@ public class Player
 	
 	public void setBboard(int i,int j, Color k)
 	{
-		this.bboard[i][j].setBackground(k);	
+		this.bboard[i][j].setBackground(k);
+                Color nou_color=Color.black;
+		this.bboard[i][j].setBackground(k);
+                if (nou_color==k) {
+                    this.bboard[i][j].setForeground(Color.GREEN);
+                    this.bboard[i][j].setText("C");
+                }
 	}		
 		
+	
+	public void settextBboard(int i,int j, String k)
+	{
+		this.bboard[i][j].setText(k);
+              
+	}
+        
+      
+        
 	public void setMove(boolean x)
 	{
 		this.move=x;
@@ -182,15 +205,16 @@ public class Player
 	{
 		if (Battleship.getStats().isShowing())
 		{	
+                    
 			Battleship.getStats().removeAll();
 			Battleship.getStats().setLayout(new GridLayout(6,3));					
 			Battleship.setData(new JLabel(""));
 			Battleship.getStats().add(Battleship.getData());
-			Battleship.setData(new JLabel("Player 1",SwingConstants.CENTER));
+			Battleship.setData(new JLabel("Jugador 1",SwingConstants.CENTER));
 			Battleship.getStats().add(Battleship.getData());
-			Battleship.setData(new JLabel("Player 2",SwingConstants.CENTER));
+			Battleship.setData(new JLabel("Jugador 2",SwingConstants.CENTER));
 			Battleship.getStats().add(Battleship.getData());				
-			Battleship.setData(new JLabel("Names"));
+			Battleship.setData(new JLabel("Nombres"));
 			Battleship.getStats().add(Battleship.getData());
 			if (Battleship.getYou() == 0)			
 				resetStats(Battleship.getYou(),Battleship.getEnemy());			
@@ -208,25 +232,25 @@ public class Player
 		Battleship.getStats().add(Battleship.getData());
 		Battleship.setData(new JLabel(Battleship.getPlayers(y).getUser(),SwingConstants.CENTER));
 		Battleship.getStats().add(Battleship.getData());
-		Battleship.setData(new JLabel("Shots Taken"));
+		Battleship.setData(new JLabel("Disparos recibidos"));
 		Battleship.getStats().add(Battleship.getData());
 		Battleship.setData(new JLabel(Integer.toString(Battleship.getPlayers(x).getShots()),SwingConstants.CENTER));
 		Battleship.getStats().add(Battleship.getData());
 		Battleship.setData(new JLabel(Integer.toString(Battleship.getPlayers(y).getShots()),SwingConstants.CENTER));
 		Battleship.getStats().add(Battleship.getData());
-		Battleship.setData(new JLabel("Hits"));
+		Battleship.setData(new JLabel("Impactos"));
 		Battleship.getStats().add(Battleship.getData());
 		Battleship.setData(new JLabel(Integer.toString(Battleship.getPlayers(x).getHits()),SwingConstants.CENTER));
 		Battleship.getStats().add(Battleship.getData());
 		Battleship.setData(new JLabel(Integer.toString(Battleship.getPlayers(y).getHits()),SwingConstants.CENTER));
 		Battleship.getStats().add(Battleship.getData());
-		Battleship.setData(new JLabel("Shot Accuracy"));
+		Battleship.setData(new JLabel("Precisión"));
 		Battleship.getStats().add(Battleship.getData());
 		Battleship.setData(new JLabel(Battleship.getPlayers(x).getAcc(),SwingConstants.CENTER));
 		Battleship.getStats().add(Battleship.getData());
 		Battleship.setData(new JLabel(Battleship.getPlayers(y).getAcc(),SwingConstants.CENTER));
 		Battleship.getStats().add(Battleship.getData());
-		Battleship.setData(new JLabel("Ships Left"));
+		Battleship.setData(new JLabel("barcos restantes"));
 		Battleship.getStats().add(Battleship.getData());
 		Battleship.setData(new JLabel(Integer.toString(Battleship.getPlayers(x).getShipsLeft()),SwingConstants.CENTER));
 		Battleship.getStats().add(Battleship.getData());
@@ -337,13 +361,14 @@ public class Player
 	public int getMHS(int x, int y)
 	{
 		return this.mhs[x][y];				
-	}	
+	}
 	
 	//method that determines if hit ship is sunk or not
 	public boolean isSunk(int x, int y)
 	{
 		int f=0;			
 		
+    
 		//finds which ship was sunk
 		while (!this.boats[f].getName().equals(this.getWhatShip(x,y)))
 			f++;
@@ -361,27 +386,41 @@ public class Player
 							,m)))
 						{
 							Battleship.getPlayers(Battleship.getYou()).setMHS(k,m,2);
-							this.setBboard(k,m,Color.black);
+							this.setBboard(k,m,Color.red);    
+                                                        //this.bboard[k][m].setText(this.boats[f].textobarco[contador++]);
 						}
+                                
 				Battleship.getPlayers(Battleship.getYou()).setGo(2);				
 				Battleship.getPlayers(Battleship.getYou()).setChit(false);
 				if ((!this.getUser().equals("CPU1"))
 					&&(!this.getUser().equals("CPU2")))
-					JOptionPane.showMessageDialog(null,"You just lost your "+
-					this.boats[f].getName()+"!","Ship Destroyed",
+					JOptionPane.showMessageDialog(null,"Has perdido tu "+
+					this.boats[f].getName()+"!","Barco destruido",
 					JOptionPane.WARNING_MESSAGE);
 			}
 			else
 			{
-				JOptionPane.showMessageDialog(null,"You sank the "+
-				this.boats[f].getName()+"!","Good Job!",
+				JOptionPane.showMessageDialog(null,"Has destruido "+
+				this.boats[f].getName()+"!","Buen trabajo!",
 				JOptionPane.INFORMATION_MESSAGE);
+                                int contador=0;
 				for (int k=0;k<10;k++)
 					for (int m=0;m<10;m++)
 						if(this.boats[f].getName().equals(this.getWhatShip(k
 							,m)))
-						{								
-							this.setBboard(k,m,Color.black);
+						{	
+                                                    if(this.boats[f].textobarco[0]=="X"){
+                                                        Image imatge=new ImageIcon(getClass().getResource("/battleship_xarxa/logocide_icon.jpg")).getImage();
+                                                        Image imatge_escalada=(imatge.getScaledInstance(45, 45, 0));
+                                                        ImageIcon icon = new ImageIcon(imatge_escalada);
+                                                        this.bboard[k][m].setIcon(icon);
+                                                        
+                                                    } else{
+                                                        
+                                                        this.setBboard(k,m,Color.green);
+                                                        this.bboard[k][m].setText(this.boats[f].textobarco[contador++]);
+                                                        
+                                                    }
 						}					
 			}
 			return true;
@@ -402,13 +441,13 @@ public class Player
 		if (this.boats[f].getHitsLeft()==0)
 		{
 			this.setShipsLeft();
-			JOptionPane.showMessageDialog(null,"You just lost your "+
-			this.boats[f].getName()+"!","Ship Destroyed",
+			JOptionPane.showMessageDialog(null,"Has perdido tu "+
+			this.boats[f].getName()+"!","Barco destruido",
 					JOptionPane.WARNING_MESSAGE);
 			for (int k=0;k<10;k++)
 				for (int m=0;m<10;m++)
 					if(z.equals(this.getWhatShip(k,m)))
-						this.setBboard(k,m,Color.black);											
+						this.setBboard(k,m,Color.black);
 			return true;
 		}
 		else
@@ -772,8 +811,8 @@ public class Player
 							(Battleship.getPlayers(Battleship.getEnemy()).getBboard(i,j).getBackground()==Color.orange)||
 							(Battleship.getPlayers(Battleship.getEnemy()).getBboard(i,j).getBackground()==Color.blue))
 						{
-							JOptionPane.showMessageDialog(null,"You tri"
-							+"ed that spot already.","Wasted Shot",
+							JOptionPane.showMessageDialog(null,""
+							+" has disparado aquí.","Tiro desperdiciado",
 							JOptionPane.ERROR_MESSAGE);								
 						}
 						else
@@ -782,8 +821,8 @@ public class Player
 					}
 					else if (source==this.getBboard(i,j))
 					{
-						JOptionPane.showMessageDialog(null,"You are not suppose"
-						+"d to fire on your own board!","Lost Turn",
+						JOptionPane.showMessageDialog(null,"No deberías"
+						+" disparar en tu tabla!","Turno perdido",
 						JOptionPane.WARNING_MESSAGE);
 						break outer;							
 					}						
@@ -791,8 +830,8 @@ public class Player
 			}
 			
 			if ((i==10)&&(j==10))
-				JOptionPane.showMessageDialog(null,"You took too long!",
-				"Lost Turn",JOptionPane.INFORMATION_MESSAGE);				
+				JOptionPane.showMessageDialog(null,"Has tarado demasiado!",
+				"Turno perdido",JOptionPane.INFORMATION_MESSAGE);				
 			Player.isStatsOpen();
 			this.setMove(false);
 			this.getTimer().stop();				
@@ -808,20 +847,20 @@ public class Player
 				if (Battleship.getPlayers(Battleship.getEnemy()).getUser().equals("Computer"))//change once
 					//menu options work
 				{
-					JOptionPane.showMessageDialog(null,"YOU WON!",
-					"It's A Celebration!",JOptionPane.INFORMATION_MESSAGE);
+					JOptionPane.showMessageDialog(null,"HAS GANADO!",
+					"felicidades!",JOptionPane.INFORMATION_MESSAGE);
 					if (this.getUser().equals("Stupid"))
-						JOptionPane.showMessageDialog(null,"Maybe you're no"
-						+"t that stupid after all!","",JOptionPane.INFORMATION_MESSAGE);
+						JOptionPane.showMessageDialog(null,"Alomejor no"
+						+"eres tan tontito después de todo!","",JOptionPane.INFORMATION_MESSAGE);
 				}
 				else
 				{
 					JOptionPane.showMessageDialog(null,
-					this.getUser()+" won!!!","It's A Celebration"
+					this.getUser()+" ha ganado!!!","Felicidades"
 					+"!",JOptionPane.INFORMATION_MESSAGE);
-					if (this.getUser().equals("Stupid"))
-						JOptionPane.showMessageDialog(null,"Maybe you're no"
-						+"t that stupid after all!","",JOptionPane.INFORMATION_MESSAGE);									
+					if (this.getUser().equals("Tontito"))
+						JOptionPane.showMessageDialog(null,"Alomejor no"
+						+"eres tan tontito después de todo!","",JOptionPane.INFORMATION_MESSAGE);									
 				}						
 			}									
 		}						
@@ -940,10 +979,10 @@ public class Player
 		{
 			if (this.getUser().equals("Computer"))
 			{
-				JOptionPane.showMessageDialog(null,"You Lost!","Sorry!",
+				JOptionPane.showMessageDialog(null,"has perdido!","Lo siento!",
 				JOptionPane.INFORMATION_MESSAGE);
-				if (Battleship.getPlayers(Battleship.getEnemy()).getUser().equals("Stupid"))
-					JOptionPane.showMessageDialog(null,"Stupid!","Sorry!",
+				if (Battleship.getPlayers(Battleship.getEnemy()).getUser().equals("Tontito"))
+					JOptionPane.showMessageDialog(null,"Tontito!","Lo siento!",
 					JOptionPane.INFORMATION_MESSAGE);
 				for (i=0;i<10;i++)
 				{
@@ -962,7 +1001,7 @@ public class Player
 			}
 			else
 				JOptionPane.showMessageDialog(null,this.getUser()+
-				" won!!!","It's A Celebration!",JOptionPane.INFORMATION_MESSAGE);			
+				" ha ganado!!!","Felicidades!",JOptionPane.INFORMATION_MESSAGE);			
 		}					
 	}	
 }

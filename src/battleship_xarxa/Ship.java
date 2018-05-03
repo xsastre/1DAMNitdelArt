@@ -14,16 +14,51 @@ public class Ship
 			   y2;
 	private int hitsleft;
 	private boolean invalid;
+        public String textobarco[];
 	
 	public Ship(String n, int d, int ln, int x, int y)
 	{
+                
 		name=n;
 		length=ln;
 		dir=d;
 		x1=x;
 		y1=y;
 		invalid=false;
-		hitsleft=ln;			
+		hitsleft=ln;	
+                textobarco=new String[length];
+                switch (length){
+                    
+                    case 1:
+                        textobarco[0]="X";
+                    break;
+                    
+                    case 2:
+                        textobarco[0]="D";
+                        textobarco[1]="E";
+                    break;
+                    
+                    case 3:
+                        textobarco[0]="N";
+                        textobarco[1]="I";
+                        textobarco[2]="T";
+                    break;
+                    
+                    case 4:
+                        textobarco[0]="C";
+                        textobarco[1]="I";
+                        textobarco[2]="D";
+                        textobarco[3]="E";
+                    break;
+                    
+                    case 5:
+                        textobarco[0]="L";
+                        textobarco[1]="'";
+                        textobarco[2]="A";
+                        textobarco[3]="R";
+                        textobarco[4]="T";
+                    break;
+                }
 	}
 	
 	public Ship(String n, int d, int ln, int x, int y, int ex, int ey)
@@ -36,7 +71,41 @@ public class Ship
 		x2=ex;
 		y2=ey;
 		invalid=false;
-		hitsleft=ln;			
+		hitsleft=ln;
+                textobarco=new String[length];
+                switch (length){
+                    
+                    case 1:
+                        textobarco[0]="C";
+                    break;
+                    
+                    case 2:
+                        textobarco[0]="D";
+                        textobarco[1]="E";
+                    break;
+                    
+                    case 3:
+                        textobarco[0]="N";
+                        textobarco[1]="I";
+                        textobarco[2]="T";
+                    break;
+                    
+                    case 4:
+                        textobarco[0]="C";
+                        textobarco[1]="I";
+                        textobarco[2]="D";
+                        textobarco[3]="E";
+                    break;
+                    
+                    case 5:
+                        textobarco[0]="L";
+                        textobarco[1]="'";
+                        textobarco[2]="A";
+                        textobarco[3]="R";
+                        textobarco[4]="T";
+                    break;
+                }
+                
 	}
 	
 	public String getName()
@@ -101,7 +170,7 @@ public class Ship
 							{
 								Battleship.getPlayers(Battleship.getYou()).setBboard(this.x1,j,null);
 								Battleship.getPlayers(Battleship.getYou()).setHitOrMiss(this.x1,j,false);
-								Battleship.getPlayers(Battleship.getYou()).setWhatShip(this.x1,j," ");	
+								Battleship.getPlayers(Battleship.getYou()).setWhatShip(this.x1,j,"");	
 							}
 					}
 			break;
@@ -111,7 +180,7 @@ public class Ship
 							{
 								Battleship.getPlayers(Battleship.getYou()).setBboard(i,this.y1,null);
 								Battleship.getPlayers(Battleship.getYou()).setHitOrMiss(i,this.y1,false);
-								Battleship.getPlayers(Battleship.getYou()).setWhatShip(i,this.y1," ");	
+								Battleship.getPlayers(Battleship.getYou()).setWhatShip(i,this.y1,"");	
 							}								
 					}
 			break;				
@@ -126,11 +195,11 @@ public class Ship
 			case 0:	{												
 						if ((this.length+this.y1)>10)								
 						{
-							JOptionPane.showMessageDialog(null,"A "+
-							this.name+" placed in a "+Battleship.getDirection(this.dir)+
-							" direction will not fit at position "
+							JOptionPane.showMessageDialog(null,"El "+
+							this.name+" situado de forma "+Battleship.getDirection(this.dir)+
+							" no cabe en estas coordenadas. "
 							+Battleship.getCletters(this.x1+1)+Battleship.getCnumbers(this.y1+1)+".",
-							"Invalid Placement",JOptionPane.ERROR_MESSAGE);
+							"Posición inválida",JOptionPane.ERROR_MESSAGE);
 							this.invalid=true;
 						}   								
 						else
@@ -140,10 +209,10 @@ public class Ship
 								j++;
 							if (j!=this.length)
 							{
-								JOptionPane.showMessageDialog(null,"Positio"
+								JOptionPane.showMessageDialog(null,"Posició"
 								+"n "+Battleship.getCletters(this.x1+1)+
-								Battleship.getCnumbers(this.y1+j+1)+" is already occupied.",
-								"Invalid Placement",JOptionPane.ERROR_MESSAGE);
+								Battleship.getCnumbers(this.y1+j+1)+" ya está ocupada.",
+								"Posición incorrecta",JOptionPane.ERROR_MESSAGE);
 								this.invalid=true;
 							}
 							else
@@ -164,11 +233,11 @@ public class Ship
 			case 1:	{		
 						if ((this.x1+this.length)>10)								
 						{
-							JOptionPane.showMessageDialog(null,"A "+
-							this.name+" placed in a "+Battleship.getDirection(this.dir)+
-							" direction will not fit at position "
+							JOptionPane.showMessageDialog(null,"El "+
+							this.name+" situado de forma "+Battleship.getDirection(this.dir)+
+							" no cabe en estas coordenadas. "
 							+Battleship.getCletters(this.x1+1)+Battleship.getCnumbers(this.y1+1)+".",
-							"Invalid Placement",JOptionPane.ERROR_MESSAGE);
+							"Posición inválida",JOptionPane.ERROR_MESSAGE);
 							this.invalid=true;
 						}
 						else
@@ -179,10 +248,10 @@ public class Ship
 								j++;
 							if (j!=this.length)
 							{
-								JOptionPane.showMessageDialog(null,"Positio"
+								JOptionPane.showMessageDialog(null,"Posició"
 								+"n "+Battleship.getCletters(this.x1+j+1)+
-								Battleship.getCnumbers(this.y1+1)+" is already occupied.",
-								"Invalid Placement",JOptionPane.ERROR_MESSAGE);
+								Battleship.getCnumbers(this.y1+1)+" ya etá ocupada.",
+								"Posición incorrecta",JOptionPane.ERROR_MESSAGE);
 								this.invalid=true;
 							}
 							else
@@ -232,10 +301,11 @@ public class Ship
 			break;
 			case 1:		shipl=4;
 			break;
-			case 2:			
-			case 3:		shipl=3;
+			case 2:		shipl=3;
+                        break;
+			case 3:		shipl=2;
 			break;
-			case 4:		shipl=2;
+			case 4:		shipl=1;
 			break;							
 		}		
 		
