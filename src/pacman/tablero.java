@@ -487,10 +487,12 @@ public class tablero extends JPanel implements ActionListener {
             pos = pacmanx / TAMANYBLOC + NUMEROCOLUMNES * (int) (pacmany / TAMANYBLOC);
             ch = screendata[pos];
             
-            if (((ch == 16) || (ch==0)) && ((pacmanx/TAMANYBLOC)==NUMEROCOLUMNES-1) && (!pacmanpassaporta)) {
+            if (((ch == 16) || (ch==0)) && ((pacmanx/TAMANYBLOC)==NUMEROCOLUMNES-1) 
+                    && (!pacmanpassaporta) && (reqdx==1)) {
                 porta_dreta=true;
             }
-            if (((ch==16) || (ch==0)) && ((pacmanx/TAMANYBLOC)==0) && (!pacmanpassaporta)) {
+            if (((ch==16) || (ch==0)) && ((pacmanx/TAMANYBLOC)==0) 
+                    && (!pacmanpassaporta) && (reqdx==-1)) {
                 porta_esquerra=true;
             }
 
