@@ -1,3 +1,5 @@
+package battleship_xarxa;
+
 import java.io.*;
 import java.net.*;
 import java.awt.*;
@@ -16,29 +18,29 @@ public class BattleshipClient {
 		
 	public BattleshipClient () throws IOException {
 		
-		int i,j;
-		
-		try {
-			servername=JOptionPane.showInputDialog(null,"Input the name of"
-			+" the server you wish to connect to.\n(ie. PC3873.princeton.edu)",
-			"Server Name",JOptionPane.PLAIN_MESSAGE);
-			if (servername==null)
-				servername=" ";
-			System.out.println("Server Name: "+servername);
-            bsSocket = new Socket(servername, 4444);
-            this.out = new PrintWriter(bsSocket.getOutputStream(), true);
-            this.in = new BufferedReader(new InputStreamReader(bsSocket.getInputStream()));
-			//System.out.println("Job");
-        } catch (UnknownHostException e) {
-            JOptionPane.showMessageDialog(null,"Don't know about host: "
-			+servername+".","Error",JOptionPane.WARNING_MESSAGE);
-			servername="invalid";  
-        } catch (IOException e) {
-			JOptionPane.showMessageDialog(null,"Couldn't get I/O for the connec"
-			+"tion to: "+servername+".","Error",JOptionPane.WARNING_MESSAGE);
-			servername="invalid";           
-        }	
-    }
+            int i,j;
+
+            try {
+                servername=JOptionPane.showInputDialog(null,"Input the name of"
+                +" the server you wish to connect to.\n(ie. PC3873.princeton.edu)",
+                "Server Name",JOptionPane.PLAIN_MESSAGE);
+                if (servername==null)
+                        servername=" ";
+                System.out.println("Server Name: "+servername);
+                bsSocket = new Socket(servername, 4444);
+                this.out = new PrintWriter(bsSocket.getOutputStream(), true);
+                this.in = new BufferedReader(new InputStreamReader(bsSocket.getInputStream()));
+                // System.out.println("Job");
+            } catch (UnknownHostException e) {
+                JOptionPane.showMessageDialog(null,"Don't know about host: "
+                    +servername+".","Error",JOptionPane.WARNING_MESSAGE);
+                    servername="invalid";  
+            } catch (IOException e) {
+                    JOptionPane.showMessageDialog(null,"Couldn't get I/O for the connec"
+                    +"tion to: "+servername+".","Error",JOptionPane.WARNING_MESSAGE);
+                    servername="invalid";           
+            }	
+        }
 	
 	public void listen() throws IOException 
 	{		

@@ -3,30 +3,30 @@ import java.io.*;
 
 public class BattleshipThread extends Thread {
     private Socket whitesox = null;			
-	PrintWriter out;
-	BufferedReader in;
-	String letter,results;
-	String me;
-	String[][] pboard=new String [10][10];
-			 
-	int i,j,//counter
-		x,y;//coordinate
-	boolean gameover=false, myturn=false;
-	
-	public BattleshipThread(Socket socket) throws IOException{
-		super("BattleshipThread");
-		this.whitesox = socket;
-		this.out = new PrintWriter(socket.getOutputStream(), true);
-		this.in = new BufferedReader(new InputStreamReader(
-				    socket.getInputStream()));
-		me=in.readLine();
-		for (i=0;i<10;i++)
-			for (j=0;j<10;j++)
-			{
-				pboard[i][j]=in.readLine();
-				System.out.println(pboard[i][j]);
-			}					
-	}
+    PrintWriter out;
+    BufferedReader in;
+    String letter,results;
+    String me;
+    String[][] pboard=new String [10][10];
+
+    int i,j,//counter
+            x,y;//coordinate
+    boolean gameover=false, myturn=false;
+
+    public BattleshipThread(Socket socket) throws IOException{
+        super("BattleshipThread");
+        this.whitesox = socket;
+        this.out = new PrintWriter(socket.getOutputStream(), true);
+        this.in = new BufferedReader(new InputStreamReader(
+                            socket.getInputStream()));
+        //me=in.readLine();
+        for (i=0;i<10;i++)
+            for (j=0;j<10;j++)
+            {
+                pboard[i][j]=in.readLine();
+                System.out.println(pboard[i][j]);
+            }					
+    }
 
     public void run()
 	{	

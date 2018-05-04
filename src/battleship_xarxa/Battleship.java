@@ -63,13 +63,15 @@ public class Battleship extends JFrame
 						  gametype;
 	private static BattleshipClient me;
 	private static boolean gameover=false;
-	
+        
+
 	public Battleship()
 	{	
 		setTitle("Battleship");		
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setJMenuBar(createMenuBar());
-		setResizable(false);			
+		setResizable(false);
+                setIcono();
 		
 		//gets user to input name
 		user=JOptionPane.showInputDialog("Enter your name.");		
@@ -92,6 +94,9 @@ public class Battleship extends JFrame
 		players[enemy]=new Player ("Computer");						
 		b=getContentPane();		
 		b.add(setBoard(you),BorderLayout.CENTER);			
+                
+                
+                
 		c=getContentPane();
 		d = getContentPane();
 		inputpanel=shipinput();
@@ -99,7 +104,15 @@ public class Battleship extends JFrame
 		pack();		
 		setVisible(true);
 		
-	}	
+	}
+        
+        public void setIcono() {
+                System.out.println(System.getProperty("user.dir"));
+                //nitdelart2018=new ImageIcon(getClass().getResource("/battleship_xarxa/logocide_icon.jpg")).getImage();                 
+                Image img = new ImageIcon(getClass().getResource("/rellotge/logocide_icon.jpg")).getImage();
+                setIconImage(img);
+        }
+                
 	
 	public static boolean getGameOver()
 	{

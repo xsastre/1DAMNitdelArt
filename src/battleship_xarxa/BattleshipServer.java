@@ -10,18 +10,18 @@ public class BattleshipServer
 	public static void main(String[] args) throws IOException 
 	{
 		boolean gameover=false;
-        int i,j, num = 0;//number of players accessing the server
+                int i,j, num = 0;//number of players accessing the server
 		ServerSocket serverSocket = null;	
 		Vector threads=new Vector();		
 	   
 	   	try {
-            serverSocket = new ServerSocket(4444);
-        } 
+                    serverSocket = new ServerSocket(4444);
+                } 
 		catch (IOException e) 
 		{
-            System.err.println("Could not listen on port: 4444.");
-            System.exit(1);
-        }     
+                    System.err.println("Could not listen on port: 4444.");
+                    System.exit(1);
+                }     
 		while (num!=2)
 		{
 			if (num==0)
