@@ -7,7 +7,7 @@ package pacman;
 
 /**
  *
- * @author xavier
+ * @author xavier bunyol tofol
  */
 
 
