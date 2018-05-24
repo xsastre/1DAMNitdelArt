@@ -37,7 +37,7 @@ public class Clock extends javax.swing.JFrame {
         altologo=636;
         ancho = java.awt.Toolkit.getDefaultToolkit().getScreenSize().width;
         alto = java.awt.Toolkit.getDefaultToolkit().getScreenSize().height;
-        Image icon = new ImageIcon(getClass().getResource("./faviconcide1.jpg")).getImage();
+        Image icon = new ImageIcon(getClass().getResource("faviconcide1.jpg")).getImage();
         setIconImage(icon);
         setSize(ancho, alto);
         setVisible(true);
@@ -85,7 +85,7 @@ public void run()
 };
 }
 class ClockDial extends JPanel{
-    public Image nitdelart2018=new ImageIcon(getClass().getResource("./nitdelart2018.jpg")).getImage(); 
+    public Image nitdelart2018=new ImageIcon(getClass().getResource("nitdelart2018.jpg")).getImage(); 
     public Image[] logo=new Image[121];
     String url="";
     public boolean segona_volta=false;
@@ -96,7 +96,7 @@ class ClockDial extends JPanel{
     public ClockDial(Clock pt){
         parent=pt;
         for (int z=0;z<=120;z++) {
-            url="./"+z+".jpg";
+            url=z+".jpg";
             logo[z]=new ImageIcon(getClass().getResource(url)).getImage();
             logo[z]=logo[z].getScaledInstance(Clock.anchologo, Clock.altologo, 0);
         }
